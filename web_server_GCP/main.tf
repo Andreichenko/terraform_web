@@ -8,7 +8,7 @@ provider "google" {
 
 resource "google_project_service" "api" {
   for_each = toset([
-  "cloudresourcemanager.googleapis.com"
+  "cloudresourcemanager.googleapis.com",
   "computegoogleapis.com"
 
   ])
