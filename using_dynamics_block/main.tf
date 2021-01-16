@@ -11,9 +11,20 @@ resource "aws_security_group" "web_sec" {
   dynamic "ingress" {
     for_each = ["80", "8081", "443"]
     content {
-      description = "Allow port HTTP 80"
+      description = "Allow port TCP"
       from_port = ingress.value
       protocol = "tcp"
+      to_port = ingress.value
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+
+  dynamic "ingress" {
+    for_each = ["5578","7814"]
+    content {
+      description = "Allow port UDP"
+      from_port = ingress.value
+      protocol = "udp"
       to_port = ingress.value
       cidr_blocks = ["0.0.0.0/0"]
     }
