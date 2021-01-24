@@ -48,4 +48,14 @@ resource "aws_instance" "server_windows" {
 
 #------------------
 
+output "latest_ubuntu20_ami_id" {
+  value = data.aws_ami.latest_ubuntu20.id
+}
 
+output "latest_amazonlinux_ami_id" {
+  value = data.aws_ami.latest_amazonlinux.id
+}
+
+output "latest_windowserver2019_ami_id" {
+  value = data.aws_ami.latest_windowserver2019.id
+}
