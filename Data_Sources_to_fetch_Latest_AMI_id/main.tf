@@ -29,3 +29,23 @@ data "aws_ami" "latest_windowserver2019" {
     values = ["Windows_Server-2019-English-Full-Base-*"]
   }
 }
+
+# ---------How to use
+/*
+resource "aws_instance" "server_ubuntu" {
+  ami           = data.aws_ami.latest_ubuntu20.id
+  instance_type = "t3.micro"
+}
+resource "aws_instance" "server_amazon" {
+  ami           = data.aws_ami.latest_amazonlinux.id
+  instance_type = "t3.micro"
+}
+resource "aws_instance" "server_windows" {
+  ami           = data.aws_ami.latest_windowserver2019.id
+  instance_type = "t3.micro"
+}
+*/
+
+#------------------
+
+
