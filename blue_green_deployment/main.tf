@@ -12,7 +12,7 @@ data "aws_ami" "latest_amazon_linux" {
   }
 }
 
-esource "aws_security_group" "web" {
+resource "aws_security_group" "web" {
   name = "Web Security Group"
   dynamic "ingress" {
     for_each = ["80", "443"]
@@ -31,9 +31,10 @@ esource "aws_security_group" "web" {
   }
   tags = {
     Name  = "Web Security Group"
-    Owner = "frei"
+    Owner = "Frei"
   }
 }
+
 
 resource "aws_launch_configuration" "web" {
   name_prefix     = "WebServer-Highly-Available-LC-"
@@ -75,3 +76,38 @@ resource "aws_autoscaling_group" "web" {
 }
 
 
+resource "aws_elb" "web" {
+  name               = "WebServer-HighlyAvailable-ELB"
+  availability_zones = [data.aws_availability_zones.working.names[0], data.aws_availability_zones.working.names[1]]
+  security_groups    = [aws_security_group.web.id]
+  listener {
+    lb_port           = 80
+    lb_protocol       = "http"
+    instance_port     = 80
+    instance_protocol = "http"
+  }
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "HTTP:80/"
+    interval            = 10
+  }
+  tags = {
+    Name  = "WebServer-HighlyAvailable-ELB"
+    Owner = "Frei"
+  }
+}
+
+resource "aws_default_subnet" "default_az1" {
+  availability_zone = data.aws_availability_zones.working.names[0]
+}
+
+resource "aws_default_subnet" "default_az2" {
+  availability_zone = data.aws_availability_zones.working.names[1]
+}
+
+
+output "web_loadbalancer_url" {
+  value = aws_elb.web.dns_name
+}
