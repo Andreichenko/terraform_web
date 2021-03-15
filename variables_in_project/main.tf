@@ -17,6 +17,7 @@ resource "aws_eip" "web" {
 }
 
 
+//noinspection HILUnresolvedReference
 resource "aws_instance" "web" {
   ami                    = data.aws_ami.latest_amazon_linux.id
   instance_type          = var.instance_size
@@ -37,6 +38,7 @@ esource "aws_security_group" "web" {
   dynamic "ingress" {
     for_each = var.port_list
     content {
+      //noinspection HILUnresolvedReference
       from_port   = ingress.value
       to_port     = ingress.value
       protocol    = "tcp"
